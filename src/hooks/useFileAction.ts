@@ -12,7 +12,7 @@ import {
 } from "@tw-material/file-browser"
 import IconFlatColorIconsVlc from "~icons/flat-color-icons/vlc"
 import IconLetsIconsViewAltFill from "~icons/lets-icons/view-alt-fill"
-import IconPotPlayerIcon from "~icons/lets-icons/player-play-filled"
+import IconPotPlayerIcon from "~icons/material-symbols/play-circle-rounded"
 import toast from "react-hot-toast"
 
 import { mediaUrl, navigateToExternalUrl } from "@/utils/common"
