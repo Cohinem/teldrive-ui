@@ -14,7 +14,6 @@ import { useProgress } from "@/components/top-progress";
 import http from "@/utils/http";
 
 import { PhoneNoPicker } from "./menus/phone-picker";
-import { getCountryCode } from "@/utils/common";
 
 const getKeys = Object.keys as <T>(object: T) => (keyof T)[];
 
@@ -44,6 +43,39 @@ export const isoCodeMap = isoCodes.reduce(
   },
   {} as Record<CountryCode, (typeof isoCodes)[0]>,
 );
+
+async function detectCountry(): Promise<CountryCode> {
+  try {
+    const response = await fetch('https://ipapi.co/json/');
+    const data = await response.json();
+
+    const countryCode = data.country_code as CountryCode;
+    if (isoCodes.some(code => code.code === countryCode)) {
+      return countryCode;
+    }
+    return 'IN';
+  } catch {
+    return 'IN';
+  }
+}
+
+export async function getCountryCode(): Promise<CountryCode> {
+  try {
+    const countryCode = await detectCountry();
+    return countryCode;
+  } catch {
+    return 'IN';
+  }
+}
+
+  detectCountry()
+    .then(countryCode => {
+      localStorage.setItem('userCountry', countryCode);
+    })
+    .catch(() => null);
+
+  return 'IN';
+}
 
 function getTypedNumber(value: string, defaultCountryCode = "IN") {
   if (value) {
